@@ -1,0 +1,6 @@
+test/
+test*
+dist/
+.cache/
+node_modules/
+

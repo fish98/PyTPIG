@@ -1,3 +1,6 @@
+*.png
+*.jpg
+*.tmp
 test/
 test*
 dist/

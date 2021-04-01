@@ -1,28 +1,28 @@
 window.main = function main() {
 
 /* Canvas要素の定義など */
-var cs  = document.getElementById('myCanvas');
-var ctx = cs.getContext('2d');
-var cx=cs.width;
-var cy=cs.height;
+let cs  = document.getElementById('myCanvas');
+let ctx = cs.getContext('2d');
+let cx=cs.width;
+let cy=cs.height;
 
 
 
 //グローバルパラメータの初期設定
-var calcOn =false;
+let calcOn =false;
 
-var dt = 0.2;
-var ds = 0.8;
+let dt = 0.2;
+let ds = 0.8;
 
-var pActAct=0.08, pInhAct=-0.08, pActC=0.1;
-var pActInh=0.11, pInhInh=0, pInhC=-0.15;
-var pActLimit=0.2, pInhLimit=0.5
-var diffConstA=0.02; diffConstI=0.5;
-var decayConstA=0.03, decayConstI=0.06;
+let pActAct=0.08, pInhAct=-0.08, pActC=0.1;
+let pActInh=0.11, pInhInh=0, pInhC=-0.15;
+let pActLimit=0.2, pInhLimit=0.5
+let diffConstA=0.02; diffConstI=0.5;
+let decayConstA=0.03, decayConstI=0.06;
 
 //反応と拡散のパラメータの設定
-var parameterSet= new Array(100);
- for (var i=0; i<20; i++){
+let parameterSet= new Array(100);
+ for (let i=0; i<20; i++){
    parameterSet[i]=new Array(20);
  }
 
@@ -56,16 +56,16 @@ parameterSet[9]=[0.1,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.2,0.03,0.02];
 
 
 //描画に関する変数の定義と数値の代入
-  var fieldSize=100; //場の大きさ
-  var cellSize=6; //1細胞の大きさ
+  let fieldSize=100; //場の大きさ
+  let cellSize=6; //1細胞の大きさ
 
 
 // 配列の定義
-    var actConc = new Array(100);
-    var inhConc = new Array(100);
-    var actDiffArray = new Array(100);
-    var inhDiffArray = new Array(100);
-    for (var i=0; i<100; i++){
+    let actConc = new Array(100);
+    let inhConc = new Array(100);
+    let actDiffArray = new Array(100);
+    let inhDiffArray = new Array(100);
+    for (let i=0; i<100; i++){
       actConc[i]=new Array(100);
       inhConc[i]=new Array(100);
       actDiffArray[i]=new Array(100);
@@ -74,46 +74,46 @@ parameterSet[9]=[0.1,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.2,0.03,0.02];
 
 
 // button操作時に呼び出す関数の設定
-document.getElementById("runButton").addEventListener("click", handleRunButton);
-document.getElementById("stopButton").addEventListener("click", handleStopButton);
-document.getElementById("randomizeButton").addEventListener("click", handleRandomButton);
-document.getElementById("clearButton").addEventListener("click", handleClearButton);
-document.getElementById("pointsButton").addEventListener("click", handlePointsButton);
-document.getElementById("xxx").addEventListener("click", changeParameterSet);
+// document.getElementById("runButton").addEventListener("click", handleRunButton);
+// document.getElementById("stopButton").addEventListener("click", handleStopButton);
+// document.getElementById("randomizeButton").addEventListener("click", handleRandomButton);
+// document.getElementById("clearButton").addEventListener("click", handleClearButton);
+// document.getElementById("pointsButton").addEventListener("click", handlePointsButton);
+// document.getElementById("xxx").addEventListener("click", changeParameterSet);
 
 
 
 //ペンのON-offと初期値の変数定義
-  var drawing = false;
-  var penDensity=100;
-  var penSize=1;
+  let drawing = false;
+  let penDensity=100;
+  let penSize=1;
 
 //お絵描き用の要素取得
-cs.addEventListener('mousedown', function(e) {
-  drawing = true;
-  var rect = e.target.getBoundingClientRect();
-  var x = e.clientX - rect.left;
-  var px=Math.floor(x/cellSize);
-  var y = e.clientY - rect.top;
-  var py=Math.floor(y/cellSize);
-  pendrawing(px,py);
-  });
+// cs.addEventListener('mousedown', function(e) {
+//   drawing = true;
+//   let rect = e.target.getBoundingClientRect();
+//   let x = e.clientX - rect.left;
+//   let px=Math.floor(x/cellSize);
+//   let y = e.clientY - rect.top;
+//   let py=Math.floor(y/cellSize);
+//   pendrawing(px,py);
+//   });
 
-cs.addEventListener('mousemove', function(e){
-  if (!drawing){
-    return
-  };
-  var rect = e.target.getBoundingClientRect();
-  var x = e.clientX - rect.left;
-  var px=Math.floor(x/cellSize);
-  var y = e.clientY - rect.top;
-  var py=Math.floor(y/cellSize);
-  pendrawing(px,py);
-});
+// cs.addEventListener('mousemove', function(e){
+//   if (!drawing){
+//     return
+//   };
+//   let rect = e.target.getBoundingClientRect();
+//   let x = e.clientX - rect.left;
+//   let px=Math.floor(x/cellSize);
+//   let y = e.clientY - rect.top;
+//   let py=Math.floor(y/cellSize);
+//   pendrawing(px,py);
+// });
 
-cs.addEventListener('mouseup', function() {
-  drawing = false;
-});
+// cs.addEventListener('mouseup', function() {
+//   drawing = false;
+// });
 
 
 
@@ -158,9 +158,9 @@ function runCalculation(){
 
 // 1個の細胞を描画する（濃度＊２５５倍）
 function drawCell(px,py,c){
-  var x =px*cellSize;           // 細胞の座標
-  var y =py*cellSize;
-  var cc=c*50;
+  let x =px*cellSize;           // 細胞の座標
+  let y =py*cellSize;
+  let cc=c*50;
   if (cc>240){
     cc=240;
   }
@@ -169,8 +169,8 @@ function drawCell(px,py,c){
 }
 //皮膚全体を描画する
 function drawSkin(){
-  for (var i=0; i<100; i++){
-    for  (var j=0; j<100; j++){
+  for (let i=0; i<100; i++){
+    for  (let j=0; j<100; j++){
     　drawCell(i,j,actConc[i][j]);
 }}}
 
@@ -179,34 +179,34 @@ function drawSkin(){
 
 //配列actConc, inhConcに乱数（0～１）を入力
 function randomizeArray(){
-  for (var i=0; i<100; i++){
-    for  (var j=0; j<100; j++){
+  for (let i=0; i<100; i++){
+    for  (let j=0; j<100; j++){
     actConc[i][j]=3*Math.random();
     inhConc[i][j]=3*Math.random();
 }}}
 
 //配列actConc, inhConcに0を入力
 function clearArray(){
-  for (var i=0; i<100; i++){
-    for  (var j=0; j<100; j++){
+  for (let i=0; i<100; i++){
+    for  (let j=0; j<100; j++){
     actConc[i][j]=0;
     inhConc[i][j]=0;
 }}}
 
 // 拡散計算用の配列の計算
 function setDiffusionArray(){
-  var root2=Math.sqrt(2);
-  var pp=2;
-  for (var i=0; i<100; i++){
-    for  (var j=0; j<100; j++){
-      var rightCell=actConc[(i+1)%100][j];
-      var leftCell=actConc[(i+99)%100][j];
-      var upperCell=actConc[i][(j+1)%100];
-      var lowerCell=actConc[i][(j+99)%100];
-      // var rightUpper=actConc[(i+1)%100][(j+1)%100]*root2/pp;
-      // var leftUpper=actConc[(i+99)%100][(j+1)%100]*root2/pp;
-      // var rightDown=actConc[(i+1)%100][(j+99)%100]*root2/pp;
-      // var leftDown=actConc[(i+99)%100][(j+99)%100]*root2/pp;
+  let root2=Math.sqrt(2);
+  let pp=2;
+  for (let i=0; i<100; i++){
+    for  (let j=0; j<100; j++){
+      let rightCell=actConc[(i+1)%100][j];
+      let leftCell=actConc[(i+99)%100][j];
+      let upperCell=actConc[i][(j+1)%100];
+      let lowerCell=actConc[i][(j+99)%100];
+      // let rightUpper=actConc[(i+1)%100][(j+1)%100]*root2/pp;
+      // let leftUpper=actConc[(i+99)%100][(j+1)%100]*root2/pp;
+      // let rightDown=actConc[(i+1)%100][(j+99)%100]*root2/pp;
+      // let leftDown=actConc[(i+99)%100][(j+99)%100]*root2/pp;
       // actDiffArray[i][j]=diffConstA*dt*(rightCell+leftCell+upperCell+lowerCell+rightUpper+leftUpper+rightDown+leftDown-(4+4*root2/pp)*actConc[i][j])/ds/ds;
       actDiffArray[i][j]=diffConstA*dt*(rightCell+leftCell+upperCell+lowerCell-4*actConc[i][j])/ds/ds;
 
@@ -225,24 +225,24 @@ function setDiffusionArray(){
 //拡散の計算
 function calcDiffusion(){
   setDiffusionArray();
-  for (var i=0; i<100; i++){
-    for  (var j=0; j<100; j++){
+  for (let i=0; i<100; i++){
+    for  (let j=0; j<100; j++){
     actConc[i][j]+=actDiffArray[i][j];
     inhConc[i][j]+=inhDiffArray[i][j];
 }}}
 
 // 反応項の計算
 function calcReaction(){
-  for (var i=0; i<100; i++){
-    for  (var j=0; j<100; j++){
-      var synAct=pActAct*actConc[i][j]+pInhAct*inhConc[i][j]+pActC;
+  for (let i=0; i<100; i++){
+    for  (let j=0; j<100; j++){
+      let synAct=pActAct*actConc[i][j]+pInhAct*inhConc[i][j]+pActC;
       if (synAct<0){
         synAct=0;
       }
       if (synAct>pActLimit){
         synAct=pActLimit;
       }
-      var synInh=pActInh*actConc[i][j]+pInhInh*inhConc[i][j]+pInhC;
+      let synInh=pActInh*actConc[i][j]+pInhInh*inhConc[i][j]+pInhC;
       if (synInh<0){
         synInh=0;
       }
@@ -277,9 +277,9 @@ function calcReaction(){
 
   function handlePointsButton(){
     clearArray();
-    for (var i=0; i<10; i++){
-      var xx=Math.round(100*Math.random());
-      var yy=Math.round(100*Math.random());
+    for (let i=0; i<10; i++){
+      let xx=Math.round(100*Math.random());
+      let yy=Math.round(100*Math.random());
       actConc[xx][yy]=5;
     }
     drawSkin();
@@ -288,29 +288,29 @@ function calcReaction(){
 
   //parameterの値をウインドウから取得
   function readParameter(){
-    var box1 =document.getElementById("pActAct-id").value;
+    let box1 =document.getElementById("pActAct-id").value;
         pActAct=Number(box1);
-    var box2=document.getElementById("pInhAct-id").value;
+    let box2=document.getElementById("pInhAct-id").value;
         pInhAct =Number(box2);
-    var box3 = document.getElementById("pActC-id").value;
+    let box3 = document.getElementById("pActC-id").value;
         pActC=Number(box3);
-    var box4=document.getElementById("pActInh-id").value;
+    let box4=document.getElementById("pActInh-id").value;
         pActInh=Number(box4);
-    var box5=document.getElementById("pInhInh-id").value;
+    let box5=document.getElementById("pInhInh-id").value;
         pInhInh=Number(box5);
-    var box6=document.getElementById("pInhC-id").value;
+    let box6=document.getElementById("pInhC-id").value;
         pInhC=Number(box6);
-    var box7=document.getElementById("pActLimit-id").value;
+    let box7=document.getElementById("pActLimit-id").value;
         pActLimit=Number(box7);
-    var box8=document.getElementById("pInhLimit-id").value;
+    let box8=document.getElementById("pInhLimit-id").value;
         pInhLimit=Number(box8);
-    var box9=document.getElementById("diffConstA-id").value;
+    let box9=document.getElementById("diffConstA-id").value;
         diffConstA=Number(box9);
-    var box10=document.getElementById("diffConstI-id").value;
+    let box10=document.getElementById("diffConstI-id").value;
         diffConstI=Number(box10);
-    var box11=document.getElementById("decayConstA-id").value;
+    let box11=document.getElementById("decayConstA-id").value;
         decayConstA=Number(box11);
-    var box12=document.getElementById("decayConstI-id").value;
+    let box12=document.getElementById("decayConstI-id").value;
         decayConstI=Number(box12);
   }
 
@@ -350,8 +350,8 @@ function calcReaction(){
   function pendrawing(x,y){
     for (i=x-penSize; i<x+penSize+1; i++){
         for (j=y-penSize; j<y+penSize+1; j++){
-          var px=(i+100)%100;
-          var py=(j+100)%100;
+          let px=(i+100)%100;
+          let py=(j+100)%100;
           drawCell(px,py,penDensity);
           actConc[i][j]=1;
     }

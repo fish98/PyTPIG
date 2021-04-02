@@ -1,8 +1,7 @@
+/* TTFish 2021.04.01 */
+
 const Canvas = require('canvas')
 const fs = require('fs')
-// const math = require('math')
-
-let filename = "fishtest2.png"
 
 let cs = Canvas.createCanvas(600, 600)
 
@@ -16,7 +15,7 @@ let calcOn = false;
 
 let dt = 0.2;
 let ds = 0.8;
-
+// pActAct pInhAct pActInh pInhInh
 let pActAct = 0.08,
   pInhAct = -0.08,
   pActC = 0.1;
@@ -63,78 +62,20 @@ for (let i = 0; i < 100; i++) {
   inhDiffArray[i] = new Array(100);
 }
 
-// button操作時に呼び出す関数の設定
-// document.getElementById("runButton").addEventListener("click", handleRunButton);
-// document.getElementById("stopButton").addEventListener("click", handleStopButton);
-// document.getElementById("randomizeButton").addEventListener("click", handleRandomButton);
-// document.getElementById("clearButton").addEventListener("click", handleClearButton);
-// document.getElementById("pointsButton").addEventListener("click", handlePointsButton);
-// document.getElementById("xxx").addEventListener("click", changeParameterSet);
-
-//ペンのON-offと初期値の変数定義
 let drawing = false;
 let penDensity = 100;
 let penSize = 1;
 
-/* USELESS FEATURE */
-
-//お絵描き用の要素取得 
-// cs.addEventListener('mousedown', function(e) {
-//   drawing = true;
-//   let rect = e.target.getBoundingClientRect();
-//   let x = e.clientX - rect.left;
-//   let px=Math.floor(x/cellSize);
-//   let y = e.clientY - rect.top;
-//   let py=Math.floor(y/cellSize);
-//   pendrawing(px,py);
-//   });
-
-// cs.addEventListener('mousemove', function(e){
-//   if (!drawing){
-//     return
-//   };
-//   let rect = e.target.getBoundingClientRect();
-//   let x = e.clientX - rect.left;
-//   let px=Math.floor(x/cellSize);
-//   let y = e.clientY - rect.top;
-//   let py=Math.floor(y/cellSize);
-//   pendrawing(px,py);
-// });
-
-// cs.addEventListener('mouseup', function() {
-//   drawing = false;
-// });
-
-
-
 // ここからが、メインのプログラム＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-function drawpdf(){
-
+function drawpdf(pAA, pIA, pAI, pII){
   const buffer = cs.toBuffer('image/png')
-  fs.writeFileSync('./fish1.png', buffer)
+  fs.writeFileSync(`./Data/${pAA}-${pIA}-${pAI}-${pII}.png`, buffer)
 }
-
-// setInterval(runCalculation, 5);
-
-
-
-
-// ここまで
-
 
 // 以下、関数の定義＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 // 計算と描画
-function runCalculation() {
-  if (calcOn == true) {
-    drawSkin();
-    for (i = 0; i < 50; i++) {
-      calcDiffusion();
-      calcReaction();
-    }
-  }
-}
 
 function Calculate(){
   drawSkin();
@@ -143,8 +84,6 @@ function Calculate(){
     calcReaction();
   }
 }
-
-
 
 // 描画＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
@@ -158,8 +97,6 @@ function drawCell(px, py, c) {
   }
   cc = Math.round(cc) // fixing f**king bugs caused by origin code
   ctx.fillStyle = `rgb(${cc},${cc},${cc})`
-  // console.log(ctx.fillStyle)
-  // console.log("rgb(" + cc + "," + cc + "," + cc + ")")
   ctx.fillRect(x, y, cellSize, cellSize);
 }
 //皮膚全体を描画する
@@ -169,10 +106,7 @@ function drawSkin() {
       // console.log(actConc[i][j])
       drawCell(i, j, actConc[i][j]);
     }
-  } 
-  // ctx.fillStyle = "rgb(123,111,0)"
-  // console.log(ctx.fillStyle)
-  // ctx.fillRect(0,0,600,600)
+  }
 }
 
 
@@ -208,22 +142,12 @@ function setDiffusionArray() {
       let leftCell = actConc[(i + 99) % 100][j];
       let upperCell = actConc[i][(j + 1) % 100];
       let lowerCell = actConc[i][(j + 99) % 100];
-      // let rightUpper=actConc[(i+1)%100][(j+1)%100]*root2/pp;
-      // let leftUpper=actConc[(i+99)%100][(j+1)%100]*root2/pp;
-      // let rightDown=actConc[(i+1)%100][(j+99)%100]*root2/pp;
-      // let leftDown=actConc[(i+99)%100][(j+99)%100]*root2/pp;
-      // actDiffArray[i][j]=diffConstA*dt*(rightCell+leftCell+upperCell+lowerCell+rightUpper+leftUpper+rightDown+leftDown-(4+4*root2/pp)*actConc[i][j])/ds/ds;
       actDiffArray[i][j] = diffConstA * dt * (rightCell + leftCell + upperCell + lowerCell - 4 * actConc[i][j]) / ds / ds;
 
       rightCell = inhConc[(i + 1) % 100][j];
       leftCell = inhConc[(i + 99) % 100][j];
       upperCell = inhConc[i][(j + 1) % 100];
       lowerCell = inhConc[i][(j + 99) % 100];
-      // rightUpper=inhConc[(i+1)%100][(j+1)%100]*root2/pp;
-      // leftUpper=inhConc[(i+99)%100][(j+1)%100]*root2/pp;
-      // rightDown=inhConc[(i+1)%100][(j+99)%100]*root2/pp;
-      // leftDown=inhConc[(i+99)%100][(j+99)%100]*root2/pp;
-      // inhDiffArray[i][j]=diffConstI*dt*(rightCell+leftCell+upperCell+lowerCell+rightUpper+leftUpper+rightDown+leftDown-(4+4*root2/pp)*inhConc[i][j])/ds/ds;
       inhDiffArray[i][j] = diffConstI * dt * (rightCell + leftCell + upperCell + lowerCell - 4 * inhConc[i][j]) / ds / ds;
     }
   }
@@ -264,122 +188,30 @@ function calcReaction() {
   }
 }
 
+function Fish(pAA, pIA, pAI, pII){
+  randomizeArray()
+  drawSkin()
+  pActAct = pAA
+  pInhAct = pIA
+  pActInh = pAI
+  pInhInh = pII
 
+  // calculate every 5ms
 
-//ボタンの操作＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+  for(let i = 0; i < 1000; i++){
+    Calculate()
+  }
 
-// function handleRunButton() {
-//   readParameter();
-//   calcOn = true;
-// }
-
-// function handleStopButton() {
-//   calcOn = false;
-// }
-
-// function handleRandomButton() {
-//   randomizeArray();
-//   drawSkin();
-// }
-
-// function handleClearButton() {
-//   clearArray();
-//   drawSkin();
-// }
-
-// function handlePointsButton() {
-//   clearArray();
-//   for (let i = 0; i < 10; i++) {
-//     let xx = Math.round(100 * Math.random());
-//     let yy = Math.round(100 * Math.random());
-//     actConc[xx][yy] = 5;
-//   }
-//   drawSkin();
-// }
-
-
-//parameterの値をウインドウから取得
-// function readParameter() {
-//   let box1 = document.getElementById("pActAct-id").value;
-//   pActAct = Number(box1);
-//   let box2 = document.getElementById("pInhAct-id").value;
-//   pInhAct = Number(box2);
-//   let box3 = document.getElementById("pActC-id").value;
-//   pActC = Number(box3);
-//   let box4 = document.getElementById("pActInh-id").value;
-//   pActInh = Number(box4);
-//   let box5 = document.getElementById("pInhInh-id").value;
-//   pInhInh = Number(box5);
-//   let box6 = document.getElementById("pInhC-id").value;
-//   pInhC = Number(box6);
-//   let box7 = document.getElementById("pActLimit-id").value;
-//   pActLimit = Number(box7);
-//   let box8 = document.getElementById("pInhLimit-id").value;
-//   pInhLimit = Number(box8);
-//   let box9 = document.getElementById("diffConstA-id").value;
-//   diffConstA = Number(box9);
-//   let box10 = document.getElementById("diffConstI-id").value;
-//   diffConstI = Number(box10);
-//   let box11 = document.getElementById("decayConstA-id").value;
-//   decayConstA = Number(box11);
-//   let box12 = document.getElementById("decayConstI-id").value;
-//   decayConstI = Number(box12);
-// }
-
-
-// paramater change by the preset parameter set
-// function changeParameterSet() {
-//   const x = document.formParameter.selectParameterSet;
-//   const num = x.selectedIndex;
-//   pActAct = parameterSet[num][0];
-//   pInhAct = parameterSet[num][1];
-//   pActC = parameterSet[num][2];
-//   pActInh = parameterSet[num][3];
-//   pInhInh = parameterSet[num][4];
-//   pInhC = parameterSet[num][5];
-//   pActLimit = parameterSet[num][6];
-//   pInhLimit = parameterSet[num][7];
-//   diffConstA = parameterSet[num][8];
-//   diffConstI = parameterSet[num][9];
-//   decayConstA = parameterSet[num][10];
-//   decayConstI = parameterSet[num][11];
-//   document.getElementById("pActAct-id").value = parameterSet[num][0];
-//   document.getElementById("pInhAct-id").value = parameterSet[num][1];
-//   document.getElementById("pActC-id").value = parameterSet[num][2];
-//   document.getElementById("pActInh-id").value = parameterSet[num][3];
-//   document.getElementById("pInhInh-id").value = parameterSet[num][4];
-//   document.getElementById("pInhC-id").value = parameterSet[num][5];
-//   document.getElementById("pActLimit-id").value = parameterSet[num][6];
-//   document.getElementById("pInhLimit-id").value = parameterSet[num][7];
-//   document.getElementById("diffConstA-id").value = parameterSet[num][8];
-//   document.getElementById("diffConstI-id").value = parameterSet[num][9];
-//   document.getElementById("decayConstA-id").value = parameterSet[num][10];
-//   document.getElementById("decayConstI-id").value = parameterSet[num][11];
-// }
-
-
-// //oekaki tool
-// function pendrawing(x, y) {
-//   for (i = x - penSize; i < x + penSize + 1; i++) {
-//     for (j = y - penSize; j < y + penSize + 1; j++) {
-//       let px = (i + 100) % 100;
-//       let py = (j + 100) % 100;
-//       drawCell(px, py, penDensity);
-//       actConc[i][j] = 1;
-//     }
-//   }
-// }
-
-randomizeArray()
-drawSkin()
-
-// calculate every 5ms
-
-for(let i = 0; i < 1000; i++){
-  Calculate()
+  drawpdf(pAA, pIA, pAI, pII)
+  console.log(`Write Image ${pActAct} - ${pInhAct} - ${pActInh} - ${pInhInh} Success`)
 }
 
-console.log("ttfish")
+// Main Function
+for(let a = 80; a < 160; a++){
+  let tmpfish = 0.001 * a; 
+  Fish(tmpfish,-0.08, 0.11, 0)
+}
 
-drawpdf()
+
+
 

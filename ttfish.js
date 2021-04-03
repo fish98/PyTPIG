@@ -1,6 +1,7 @@
 /* TTFish 2021.04.01 */
 
 const Canvas = require('canvas')
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants')
 const fs = require('fs')
 
 let cs = Canvas.createCanvas(600, 600)
@@ -70,7 +71,11 @@ let penSize = 1;
 
 function drawpdf(pAA, pIA, pAI, pII){
   const buffer = cs.toBuffer('image/png')
-  fs.writeFileSync(`./Data/${pAA}-${pIA}-${pAI}-${pII}.png`, buffer)
+  pAA = pAA * 100 / 100 // Dark Magic
+  pIA = pIA * 100 / 100
+  pAI = pAI * 100 / 100
+  pII = pII * 100 / 100
+  fs.writeFileSync(`./Data2/${pAA}-${pIA}-${pAI}-${pII}.png`, buffer)
 }
 
 // 以下、関数の定義＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -99,7 +104,7 @@ function drawCell(px, py, c) {
   ctx.fillStyle = `rgb(${cc},${cc},${cc})`
   ctx.fillRect(x, y, cellSize, cellSize);
 }
-//皮膚全体を描画する
+//皮膚全体を描画するq
 function drawSkin() {
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 100; j++) {
@@ -207,11 +212,20 @@ function Fish(pAA, pIA, pAI, pII){
 }
 
 // Main Function
-for(let a = 80; a < 160; a++){
-  let tmpfish = 0.001 * a; 
-  Fish(tmpfish,-0.08, 0.11, 0)
+for(let a = 0; a < 16; a++){
+  for(let b =  0; b < 16; b++){
+    for(let c = 0; c < 16; c++){
+      for(let d = 0; d < 16; d++){
+        let tmpfishA = 0.005 * a + 0.04; 
+        Fish(tmpfishA,-0.08, 0.11, 0)
+      }
+    }
+  }
 }
 
-
+// for(let b = 0; b < 80; b++){
+//   let tmpfish = -0.002 * b; 
+//   Fish(0.08, tmpfish, 0.11, 0)
+// }
 
 

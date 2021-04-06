@@ -71,11 +71,11 @@ let penSize = 1;
 
 function drawpdf(pAA, pIA, pAI, pII){
   const buffer = cs.toBuffer('image/png')
-  pAA = pAA * 100 / 100 // Dark Magic
-  pIA = pIA * 100 / 100
-  pAI = pAI * 100 / 100
-  pII = pII * 100 / 100
-  fs.writeFileSync(`./Data2/${pAA}-${pIA}-${pAI}-${pII}.png`, buffer)
+  pAA = Number(pAA).toFixed(3) // Dark Magic
+  pIA = Number(pAA).toFixed(3)
+  pAI = Number(pAA).toFixed(3)
+  pII = Number(pAA).toFixed(3)
+  fs.writeFileSync(`./Data/${pAA}-${pIA}-${pAI}-${pII}.png`, buffer)
 }
 
 // 以下、関数の定義＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -216,16 +216,13 @@ for(let a = 0; a < 16; a++){
   for(let b =  0; b < 16; b++){
     for(let c = 0; c < 16; c++){
       for(let d = 0; d < 16; d++){
-        let tmpfishA = 0.005 * a + 0.04; 
-        Fish(tmpfishA,-0.08, 0.11, 0)
+        let tmpfishA = 0.005 * a + 0.04
+        let tmpfishB = 0.005 * b - 0.12
+        let tmpfishC = 0.005 * c + 0.07
+        let tmpfishD = 0.005 * d - 0.04
+        Fish(tmpfishA, tmpfishB, tmpfishC, tmpfishD)
       }
     }
   }
 }
-
-// for(let b = 0; b < 80; b++){
-//   let tmpfish = -0.002 * b; 
-//   Fish(0.08, tmpfish, 0.11, 0)
-// }
-
 

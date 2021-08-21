@@ -1,18 +1,11 @@
 /* TTFish 2021.04.01 */
 
 const Canvas = require('canvas')
-const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants')
 const fs = require('fs')
 
 let cs = Canvas.createCanvas(600, 600)
 
 let ctx = cs.getContext('2d')
-
-let cx = cs.width
-let cy = cs.height
-
-//グローバルパラメータの初期設定
-let calcOn = false;
 
 let dt = 0.2;
 let ds = 0.8;
@@ -30,8 +23,6 @@ diffConstI = 0.5;
 let decayConstA = 0.03,
   decayConstI = 0.06;
 
-//描画に関する変数の定義と数値の代入
-let fieldSize = 100; //場の大きさ
 let cellSize = 6; //1細胞の大きさ
 // 配列の定義
 let actConc = new Array(100);
@@ -44,10 +35,6 @@ for (let i = 0; i < 100; i++) {
   actDiffArray[i] = new Array(100);
   inhDiffArray[i] = new Array(100);
 }
-
-let drawing = false;
-let penDensity = 100;
-let penSize = 1;
 
 // ここからが、メインのプログラム＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
@@ -90,12 +77,10 @@ function drawCell(px, py, c) {
 function drawSkin() {
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 100; j++) {
-      // console.log(actConc[i][j])
       drawCell(i, j, actConc[i][j]);
     }
   }
 }
-
 
 //配列の操作＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
@@ -109,20 +94,8 @@ function randomizeArray() {
   }
 }
 
-//配列actConc, inhConcに0を入力
-function clearArray() {
-  for (let i = 0; i < 100; i++) {
-    for (let j = 0; j < 100; j++) {
-      actConc[i][j] = 0;
-      inhConc[i][j] = 0;
-    }
-  }
-}
-
 // 拡散計算用の配列の計算
 function setDiffusionArray() {
-  let root2 = Math.sqrt(2);
-  let pp = 2;
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 100; j++) {
       let rightCell = actConc[(i + 1) % 100][j];

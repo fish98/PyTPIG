@@ -212,6 +212,8 @@ function Fish(pAA, pIA, pAI, pII){
 }
 
 // Main Function
+num = 0
+allnum = 16 ** 4
 for(let a = 0; a < 16; a++){
   for(let b =  0; b < 16; b++){
     for(let c = 0; c < 16; c++){
@@ -221,6 +223,8 @@ for(let a = 0; a < 16; a++){
         let tmpfishC = 0.01 * c + 0.03
         let tmpfishD = 0.01 * d - 0.08
         Fish(tmpfishA, tmpfishB, tmpfishC, tmpfishD)
+        num++
+        console.log(`Process Image ${num}.............. Status: ${num/allnum*100}%`)
       }
     }
   }

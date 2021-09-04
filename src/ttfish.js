@@ -216,10 +216,10 @@ for(let a = 0; a < 16; a++){
   for(let b =  0; b < 16; b++){
     for(let c = 0; c < 16; c++){
       for(let d = 0; d < 16; d++){
-        let tmpfishA = 0.005 * a + 0.04
-        let tmpfishB = 0.005 * b - 0.12
-        let tmpfishC = 0.005 * c + 0.07
-        let tmpfishD = 0.005 * d - 0.04
+        let tmpfishA = 0.01 * a
+        let tmpfishB = 0.01 * b - 0.16
+        let tmpfishC = 0.01 * c + 0.03
+        let tmpfishD = 0.01 * d - 0.08
         Fish(tmpfishA, tmpfishB, tmpfishC, tmpfishD)
       }
     }

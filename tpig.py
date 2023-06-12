@@ -12,6 +12,8 @@ from random import random
 # tmp Import 
 # import time
 
+iterTime = 50
+
 canvasWidth = 600
 canvasHeight = 600
 
@@ -62,7 +64,7 @@ def saveImage(pAA, pIA, pAI, pII, widget):
 
 def Calculate():
 	drawSkin()
-	for repeatTimes in range(50):
+	for repeatTimes in range(iterTime):
 		calcDiffusion()
 		calcReaction()
 
@@ -146,7 +148,7 @@ def Tpig(pAA, pIA, pAI, pII):
 	pInhInh = float(pII)
 
 	# Assume Calculation Finish in Every 5ms
-	for i in range(50):
+	for i in range(iterTime):
 		Calculate()
 
 	saveImage(pAA, pIA, pAI, pII, ctx)

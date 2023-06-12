@@ -1,6 +1,6 @@
 # PyTPIG
 
-# A simple reaction diffusion system simulator written in Python 
+A simple reaction diffusion system simulator written in Python 
 
 ## Usage
 
